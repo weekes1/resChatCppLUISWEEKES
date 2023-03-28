@@ -1,4 +1,6 @@
 /* Some styles for text */
+
+
 h2, h3, p {
     font-family: Verdana, sans-serif;
 }
@@ -10,17 +12,19 @@ h2, h3, p {
 
 /* Text Box attributes */
 .textinput {
-    width: 400px;
+    width: 700px;
     font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
     font-size: 82%;
 }
 
 /* Scroll Box attributes */
 .scrollabletextbox {
-    background-color: #e6b3ff;
-    height: 300px;
-    width: 400px;
+    background-color: #66ffff;
+    height: 600px;
+    width: 700px;
     font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
     font-size: 82%;
     overflow:scroll;
 }
+
+
