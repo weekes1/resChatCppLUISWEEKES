@@ -8,9 +8,9 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <vector>
 #include <algorithm>
 #include "httplib.h"
-
 using namespace httplib;
 using namespace std;
 
@@ -39,11 +39,33 @@ string getMessagesJSON(string username, map<string,vector<string>> &messageMap) 
 	return result;
 }
 
+bool contains(vector<string> vec, const string & elem)
+{
+    bool result = false;
+    if( find(vec.begin(), vec.end(), elem) != vec.end() )
+    {
+        result = true;
+    }
+    return result;
+}//new contain function to check for previous emails and usernames.prof Skon pls check
+
+bool sixstringtest(string str) {
+    bool result = false;
+    if( str.length()<6)
+    {
+        result = true;
+    }
+    return result;
+
+}
 int main(void) {
   Server svr;
   int nextUser=0;
   map<string,vector<string>> messageMap;
-	
+  vector<string> emailvec;
+  vector<string> Passwordvec;
+  vector<string> Usernamevec;//new vectors???????????????????Pls Check
+
   /* "/" just returnsAPI name */
   svr.Get("/", [](const Request & /*req*/, Response &res) {
     res.set_header("Access-Control-Allow-Origin","*");
@@ -90,7 +112,48 @@ int main(void) {
     string resultJSON = getMessagesJSON(username,messageMap);
     res.set_content(resultJSON, "text/json");
   });
+
+   svr.Get(R"(/chat/register/username/email/password/(.*))", [&](const Request& req, Response& res) {
+    string username = req.matches[1];
+    string email = req.matches[1];
+    string Password = req.matches[1];
+    string result;
+    bool usernamesuccess = false;
+    bool emailsuccess = false;
+    bool passwordsuccess = false;
+    res.set_header("Access-Control-Allow-Origin","*");
+        // Check if user with this name exists
+    if (contains(Usernamevec,username)) {
+    	result = "{\"status\":\"useranameexists\"}";
+    } else {
+    	// Add user to uservect
+    	Usernamevec.push_back(username);
+	usernamesuccess = true;
+    }
+
+    if (contains(emailvec,email)) {
+    	result = "{\"status\":\"emailexists\"}";
+    } else {
+    	// Add email to email vect
+    	emailvec.push_back(email);
+	emailsuccess = true;
+    }
+
+    if (sixstringtest(Password)) {
+    	result = "{\"status\":\"passtooshort\"}";
+    } else {
+    	// Add email to email vect
+    	Passwordvec.push_back(Password);
+	passwordsuccess = true;
+    }
+	if(passwordsuccess && emailsuccess && usernamesuccess){
+	result = "{\"status\":\"success\"}";
+	}
+    
+    res.set_content(result, "text/json");
+  });
   
+//Require users to register and 
   cout << "Server listening on port " << port << endl;
   svr.listen("0.0.0.0", port);
 
