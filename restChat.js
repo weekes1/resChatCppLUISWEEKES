@@ -20,6 +20,10 @@ document.getElementById('login-btn').addEventListener("click", (e) => {
 document.getElementById('leave-btn').addEventListener("click", leaveSession);
 document.getElementById('send-btn').addEventListener("click", sendText);
 
+/*Drop Down Buttons*/
+document.getElementById('Spooky-btn').addEventListener("click", SpookyChat);
+document.getElementById('Rude-btn').addEventListener("click", RudeChat);
+document.getElementById('Funny-btn').addEventListener("click", FunnyChat);
 // Watch for enter on message box
 document.getElementById('message').addEventListener("keydown", (e)=> {
     if (e.code == "Enter") {
@@ -28,8 +32,21 @@ document.getElementById('message').addEventListener("keydown", (e)=> {
 });
 
 
+function SpookyChat(){
+console.log("test")
+}
+
+function RudeChat(){
+console.log("test2")
+}
+
+function FunnyChat(){
+console.log("test3")
+}
+
 // Call function on page exit
 window.onbeforeunload = leaveSession;
+
 
 
 function completeJoin(results) {
@@ -47,6 +64,17 @@ function completeJoin(results) {
 function join() {
 	myname = document.getElementById('yourname').value;
 	fetch(baseUrl+'/chat/join/'+myname, {
+        method: 'get'
+    })
+    .then (response => response.json() )
+    .then (data =>completeJoin(data))
+    .catch(error => {
+        {alert("Error: Something went wrong:"+error);}
+    })
+}
+function register() {
+	myname = document.getElementById('credentials').value;
+	fetch(baseUrl+'/chat/register/username/email/'+myname, {
         method: 'get'
     })
     .then (response => response.json() )

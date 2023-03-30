@@ -38,6 +38,19 @@ string getMessagesJSON(string username, map<string,vector<string>> &messageMap) 
 	messageMap[username].clear();
 	return result;
 }
+string getusersJSON(string username, map<string,vector<string>> &messageMap) {//new function for user list.
+	/* retrieve json list of users for this user */
+	bool first = true;
+	string result = "{\"\":[";
+	for (string usernames :  messageMap[username]) {
+		if (not first) result += ",";
+		result += usernames;
+		first = false;
+	}
+	result += "]}";
+	messageMap[username].clear();
+	return result;
+}
 
 bool contains(vector<string> vec, const string & elem)
 {
@@ -109,7 +122,9 @@ int main(void) {
    svr.Get(R"(/chat/fetch/(.*))", [&](const Request& req, Response& res) {
     string username = req.matches[1];
     res.set_header("Access-Control-Allow-Origin","*");
-    string resultJSON = getMessagesJSON(username,messageMap);
+    string result1 = getMessagesJSON(username,messageMap);
+    string result2 = getusersJSON(username,messageMap);
+    string resultJSON = result1+result2;
     res.set_content(resultJSON, "text/json");
   });
 
@@ -118,7 +133,7 @@ int main(void) {
     string email = req.matches[1];
     string Password = req.matches[1];
     string result;
-    bool usernamesuccess = false;
+    bool usernamesuccess = false;//not sure if these will be needed
     bool emailsuccess = false;
     bool passwordsuccess = false;
     res.set_header("Access-Control-Allow-Origin","*");
