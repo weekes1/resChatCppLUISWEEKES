@@ -135,8 +135,7 @@ int main(void) {
     string username = req.matches[1];
     res.set_header("Access-Control-Allow-Origin","*");
     string result1 = getMessagesJSON(username,messageMap);
-    string result2 = getusersJSON(username,messageMap);// this causes the webpage to break--check to see if json
-// is correct --breaks the js fetch
+    string result2 = getusersJSON(username,messageMap);
     string resultJSON = result1+result2;
     res.set_content(resultJSON, "text/json");
   });

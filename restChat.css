@@ -1,3 +1,4 @@
+
 /* Some styles for text */
 
 
@@ -26,5 +27,6 @@ h2, h3, p {
     font-size: 82%;
     overflow:scroll;
 }
-
-
+body{
+background-color:#00BFFF;
+}

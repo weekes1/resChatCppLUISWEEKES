@@ -21,9 +21,61 @@ document.getElementById('leave-btn').addEventListener("click", leaveSession);
 document.getElementById('send-btn').addEventListener("click", sendText);
 
 /*Drop Down Buttons*/
-document.getElementById('Spooky-btn').addEventListener("click", SpookyChat);
-document.getElementById('Rude-btn').addEventListener("click", RudeChat);
-document.getElementById('Funny-btn').addEventListener("click", FunnyChat);
+document.querySelector("#Original-btn").addEventListener("click", (e) => {
+    setOriginal();
+});
+document.querySelector("#Fire-btn").addEventListener("click", (e) => {
+    setFire();
+});
+document.querySelector("#Nature-btn").addEventListener("click", (e) => {
+    setNature();
+});
+	var box = document.getElementsByClassName('.scrollabletextbox');
+	background = {};/*styles for box are showing up as undefined--probably because not an object*/
+        width = {}; //attempt to declare glabally to see if error would be fixed.
+        fontFamily= {};
+        fontSize= {};
+        overflow={};		
+
+function setOriginal() {
+	document.body.style.background = "#00BFFF";
+	var box = document.querySelectorAll('.scrollabletextbox');
+	[].forEach.call(box, function(ele) {
+	ele.style.background = "#66FFFF";/*styles for box are showing up as undefined*/
+	ele.style.height = "300px";
+        ele.style.width = "400px";
+        ele.style.fontFamily= "Verdana, Tahoma, Arial, Helvetica, sans-serif";
+        ele.style.fontSize= "82%";
+        ele.style.overflow="scroll";		
+});
+}
+function setFire() {
+	document.body.style.background = "#ff3300";
+	var box = document.querySelectorAll('.scrollabletextbox');
+	[].forEach.call(box, function(ele) {
+	ele.style.background="#ff9900";
+	ele.style.height= "300px";
+        ele.style.width= "400px";
+        ele.style.fontFamily= "Verdana, Tahoma, Arial, Helvetica, sans-serif";
+        ele.style.fontSize= "82%";
+        ele.style.overflow="scroll";		
+});
+
+
+}
+
+function setNature() {
+	document.body.style.background = "#009933";
+	var box = document.querySelectorAll('.scrollabletextbox');
+	[].forEach.call(box, function(ele) {
+	ele.style.background="#ccffcc";
+	ele.style.height= "300px";
+        ele.style.width= "400px";
+        ele.style.fontFamily= "Verdana, Tahoma, Arial, Helvetica, sans-serif";
+        ele.style.fontSize= "82%";
+        ele.style.overflow="scroll";		
+});
+}
 // Watch for enter on message box
 document.getElementById('message').addEventListener("keydown", (e)=> {
     if (e.code == "Enter") {
@@ -32,17 +84,6 @@ document.getElementById('message').addEventListener("keydown", (e)=> {
 });
 
 
-function SpookyChat(){
-console.log("test")
-}
-
-function RudeChat(){
-console.log("test2")
-}
-
-function FunnyChat(){
-console.log("test3")
-}
 
 // Call function on page exit
 window.onbeforeunload = leaveSession;
@@ -114,8 +155,10 @@ function completeFetch(result) {
 	messages.forEach(function (m,i) {
 		name = m['user'];
 		message = m['message'];
+
 		document.getElementById('chatBox').innerHTML +=
-	    	"<font color='red'>" + name + ": </font>" + message + "<br />";
+			    	"<font color='red'>" + name + ": </font>" + message + "<br />";
+
 	});
 	users = result["users"];
 	 document.getElementById('members').innerHTML =
