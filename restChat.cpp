@@ -34,23 +34,27 @@ string getMessagesJSON(string username, map<string,vector<string>> &messageMap) 
 		result += message;
 		first = false;
 	}
-	result += "]}";
+	result += "]";
 	messageMap[username].clear();
 	return result;
 }
-string getusersJSON(string username, map<string,vector<string>> &messageMap) {//new function for user list.
-	/* retrieve json list of users for this user */
+
+string getusersJSON(string username, map<string,vector<string>> &messageMap) {
+	/* retrieve json list of messages for this user */
 	bool first = true;
-	string result = "{\"\":[";
-	for (string usernames :  messageMap[username]) {
+	string result = ",\"users\":[";
+	for (auto const& message :  messageMap) {
 		if (not first) result += ",";
-		result += usernames;
-		first = false;
+		result+="\"";
+		result += message.first;
+		result +="\"";
+		first = false;;
 	}
 	result += "]}";
 	messageMap[username].clear();
 	return result;
 }
+
 
 bool contains(vector<string> vec, const string & elem)
 {
@@ -61,6 +65,7 @@ bool contains(vector<string> vec, const string & elem)
     }
     return result;
 }//new contain function to check for previous emails and usernames.prof Skon pls check
+
 
 bool sixstringtest(string str) {
     bool result = false;
@@ -78,7 +83,7 @@ int main(void) {
   vector<string> emailvec;
   vector<string> Passwordvec;
   vector<string> Usernamevec;//new vectors???????????????????Pls Check
-
+  bool registered = false;
   /* "/" just returnsAPI name */
   svr.Get("/", [](const Request & /*req*/, Response &res) {
     res.set_header("Access-Control-Allow-Origin","*");
@@ -89,10 +94,11 @@ int main(void) {
   svr.Get(R"(/chat/join/(.*))", [&](const Request& req, Response& res) {
     res.set_header("Access-Control-Allow-Origin","*");
     string username = req.matches[1];
+//    string pass = req.matches[2];
     string result;
     vector<string> empty;
     cout << username << " joins" << endl;
-    
+//   if(contains(Usernamevec,username) && contains(Passwordvec,pass)){ 
     // Check if user with this name exists
     if (messageMap.count(username)) {
     	result = "{\"status\":\"exists\"}";
@@ -102,6 +108,12 @@ int main(void) {
     	result = "{\"status\":\"success\",\"user\":\"" + username + "\"}";
     }
     res.set_content(result, "text/json");
+//	}else{
+//	result = "{\"status\":\"not registered\"}";
+  //      res.set_content(result, "text/json");
+
+ //   }
+
   });
 
    svr.Get(R"(/chat/send/(.*)/(.*))", [&](const Request& req, Response& res) {
@@ -123,48 +135,45 @@ int main(void) {
     string username = req.matches[1];
     res.set_header("Access-Control-Allow-Origin","*");
     string result1 = getMessagesJSON(username,messageMap);
-    string result2 = getusersJSON(username,messageMap);
+    string result2 = getusersJSON(username,messageMap);// this causes the webpage to break--check to see if json
+// is correct --breaks the js fetch
     string resultJSON = result1+result2;
     res.set_content(resultJSON, "text/json");
   });
 
-   svr.Get(R"(/chat/register/username/email/password/(.*))", [&](const Request& req, Response& res) {
+   svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& res) {
+    res.set_header("Access-Control-Allow-Origin","*");
     string username = req.matches[1];
-    string email = req.matches[1];
-    string Password = req.matches[1];
+    string email = req.matches[2];
+    string Password = req.matches[3];
     string result;
     bool usernamesuccess = false;//not sure if these will be needed
     bool emailsuccess = false;
     bool passwordsuccess = false;
-    res.set_header("Access-Control-Allow-Origin","*");
         // Check if user with this name exists
-    if (contains(Usernamevec,username)) {
-    	result = "{\"status\":\"useranameexists\"}";
-    } else {
+    if (!contains(Usernamevec,username)) {
     	// Add user to uservect
     	Usernamevec.push_back(username);
 	usernamesuccess = true;
     }
 
-    if (contains(emailvec,email)) {
-    	result = "{\"status\":\"emailexists\"}";
-    } else {
+    if (!contains(emailvec,email)) {
+    
     	// Add email to email vect
     	emailvec.push_back(email);
 	emailsuccess = true;
     }
 
     if (sixstringtest(Password)) {
-    	result = "{\"status\":\"passtooshort\"}";
-    } else {
     	// Add email to email vect
     	Passwordvec.push_back(Password);
 	passwordsuccess = true;
     }
 	if(passwordsuccess && emailsuccess && usernamesuccess){
 	result = "{\"status\":\"success\"}";
-	}
-    
+	}else{
+	result = "{\"status\":\"error\"}";
+	}    
     res.set_content(result, "text/json");
   });
   

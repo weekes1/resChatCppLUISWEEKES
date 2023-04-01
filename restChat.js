@@ -72,6 +72,7 @@ function join() {
         {alert("Error: Something went wrong:"+error);}
     })
 }
+
 function register() {
 	myname = document.getElementById('credentials').value;
 	fetch(baseUrl+'/chat/register/username/email/'+myname, {
@@ -116,18 +117,28 @@ function completeFetch(result) {
 		document.getElementById('chatBox').innerHTML +=
 	    	"<font color='red'>" + name + ": </font>" + message + "<br />";
 	});
-}
+	users = result["users"];
+	 document.getElementById('members').innerHTML =
+                users;
 
-/* Check for new messaged */
+}
+/*function userlist(result) {
+
+	});
+}*/
+
+/* Check for new messages */
 function fetchMessage() {
 	fetch(baseUrl+'/chat/fetch/'+myname, {
         method: 'get'
     })
     .then (response => response.json() )
     .then (data =>completeFetch(data))
+//    .then (data =>userlist(data))
     .catch(error => {
         {console.log("Server appears down");}
     })  	
+
 }
 /* Functions to set up visibility of sections of the display */
 function startSession(name){
@@ -154,5 +165,6 @@ function leaveSession(){
     document.getElementById('leave').style.display = 'none';
 	clearInterval(inthandle);
 }
+
 
 
