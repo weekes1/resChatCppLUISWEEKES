@@ -7,7 +7,6 @@ var state="off";
 var myname="";
 var inthandle;
 
-
 /* Start with text input and status hidden */
 document.getElementById('chatinput').style.display = 'none';
 document.getElementById('status').style.display = 'none';
@@ -20,7 +19,6 @@ document.getElementById('login-btn').addEventListener("click", (e) => {
 /* Set up buttons */
 document.getElementById('leave-btn').addEventListener("click", leaveSession);
 document.getElementById('send-btn').addEventListener("click", sendText);
-document.getElementById('Delete-btn').addEventListener("click", deleteConvo);
 
 /*Drop Down Buttons*/
 document.querySelector("#Original-btn").addEventListener("click", (e) => {
@@ -65,7 +63,6 @@ function setFire() {
 
 
 }
-
 
 function setNature() {
 	document.body.style.background = "#009933";
@@ -153,14 +150,6 @@ function sendText() {
 
 }
 
-var del =false;
-function deleteConvo(){
- del =true; 
-	//document.getElementById('chatBox').innerHTML ="";
-
-console.log("Cleared chat");
-}
-
 function completeFetch(result) {
 	messages = result["messages"];
 	messages.forEach(function (m,i) {
@@ -169,20 +158,16 @@ function completeFetch(result) {
   	var boxmess = "<font color='red'>" + name + ": </font>" + message + "<br />";
 	document.getElementById('chatBox').innerHTML +=
 	boxmess;
-	//setInterval(function(){document.getElementById('chatBox').innerHTML-=boxmess;}, 20000);
 	});
-
-	if(del==true){
-
-	document.getElementById('chatBox').innerHTML ="";
-	del=false;
-	}
 	users = result["users"];
 	 document.getElementById('members').innerHTML =
                 users;
+
 }
+/*function userlist(result) {
 
-
+	});
+}*/
 
 /* Check for new messages */
 function fetchMessage() {
@@ -208,8 +193,6 @@ function startSession(name){
     document.getElementById('chatinput').style.display = 'block';
     document.getElementById('status').style.display = 'block';
     document.getElementById('leave').style.display = 'block';
-    //setInterval(function(){document.getElementById('chatBox').innerHTML="";}, 10000);
-
     /* Check for messages every 500 ms */
     inthandle=setInterval(fetchMessage,500);
 }
