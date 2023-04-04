@@ -17,6 +17,10 @@ document.getElementById('login-btn').addEventListener("click", (e) => {
 	join();
 })
 
+document.getElementById('save-btn').addEventListener("click", (e) => {
+	register();
+})
+
 /* Set up buttons */
 document.getElementById('leave-btn').addEventListener("click", leaveSession);
 document.getElementById('send-btn').addEventListener("click", sendText);
@@ -107,23 +111,39 @@ function completeJoin(results) {
 
 function join() {
 	myname = document.getElementById('yourname').value;
-	fetch(baseUrl+'/chat/join/'+myname, {
+	pass = document.getElementById('yourpass').value;
+	fetch(baseUrl+'/chat/join/'+myname+'/'+pass, {
         method: 'get'
     })
-    .then (response => response.json() )
+    .then (response => response.json())
     .then (data =>completeJoin(data))
     .catch(error => {
         {alert("Error: Something went wrong:"+error);}
     })
 }
 
+function completereg(results) {
+	var status = results['status'];
+	if (status != "success") {
+		alert("Reg fail!");
+		leaveSession();
+		return;
+	}
+	var user = results['user'];
+	console.log("Reg:"+user);
+//	startSession(user);
+}
+
 function register() {
-	myname = document.getElementById('credentials').value;
-	fetch(baseUrl+'/chat/register/username/email/'+myname, {
+	console.log("registering")
+	myname = document.getElementById('orangeForm-name').value;
+	email = document.getElementById('orangeForm-email').value;
+	pass = document.getElementById('orangeForm-pass').value;
+	fetch(baseUrl+'/chat/register/'+myname+'/'+email+'/'+pass, {
         method: 'get'
     })
     .then (response => response.json() )
-    .then (data =>completeJoin(data))
+    .then (data =>completereg(data))
     .catch(error => {
         {alert("Error: Something went wrong:"+error);}
     })

@@ -91,28 +91,28 @@ int main(void) {
   });
 
 
-  svr.Get(R"(/chat/join/(.*))", [&](const Request& req, Response& res) {
+  svr.Get(R"(/chat/join/(.*)/(.*))", [&](const Request& req, Response& res) {
     res.set_header("Access-Control-Allow-Origin","*");
     string username = req.matches[1];
-//    string pass = req.matches[2];
+    string pass = req.matches[2];//new
     string result;
     vector<string> empty;
     cout << username << " joins" << endl;
-//   if(contains(Usernamevec,username) && contains(Passwordvec,pass)){ 
+   if(contains(Usernamevec,username) && contains(Passwordvec,pass)){//new 
     // Check if user with this name exists
-    if (messageMap.count(username)) {
-    	result = "{\"status\":\"exists\"}";
-    } else {
+   // if (messageMap.count(username)) {
+    //	result = "{\"status\":\"exists\"}";
+   // } else {
     	// Add user to messages map
     	messageMap[username]=empty;
     	result = "{\"status\":\"success\",\"user\":\"" + username + "\"}";
-    }
+    //}
     res.set_content(result, "text/json");
-//	}else{
-//	result = "{\"status\":\"not registered\"}";
-  //      res.set_content(result, "text/json");
+	}else{//new
+	result = "{\"status\":\"not registered\"}";
+        res.set_content(result, "text/json");
 
- //   }
+    }
 
   });
 
@@ -163,8 +163,8 @@ int main(void) {
 	emailsuccess = true;
     }
 
-    if (sixstringtest(Password)) {
-    	// Add email to email vect
+    if (!sixstringtest(Password)) {
+    	// Add email to password to  vect
     	Passwordvec.push_back(Password);
 	passwordsuccess = true;
     }
