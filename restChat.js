@@ -36,12 +36,12 @@ document.querySelector("#Fire-btn").addEventListener("click", (e) => {
 document.querySelector("#Nature-btn").addEventListener("click", (e) => {
     setNature();
 });
-	var box = document.getElementsByClassName('.scrollabletextbox');
-	background = {};/*styles for box are showing up as undefined--probably because not an object*/
+/*	var box = document.getElementsByClassName('.scrollabletextbox');
+	background = {};styles for box are showing up as undefined--probably because not an object
         width = {}; //attempt to declare glabally to see if error would be fixed.
         fontFamily= {};
         fontSize= {};
-        overflow={};		
+        overflow={}; */
 
 function setOriginal() {
 	document.body.style.background = "#00BFFF";
@@ -100,7 +100,7 @@ window.onbeforeunload = leaveSession;
 function completeJoin(results) {
 	var status = results['status'];
 	if (status != "success") {
-		alert("Username already exists!");
+		alert("Please Register!");
 		leaveSession();
 		return;
 	}
@@ -197,6 +197,7 @@ function completeFetch(result) {
 	document.getElementById('chatBox').innerHTML ="";
 	del=false;
 	}
+
 	users = result["users"];
 	 document.getElementById('members').innerHTML =
                 users;
