@@ -11,6 +11,9 @@
 #include <vector>
 #include <algorithm>
 #include "httplib.h"
+#include "ChatDB.h"
+#include "ChatEntry.h"
+
 using namespace httplib;
 using namespace std;
 
@@ -78,6 +81,8 @@ bool sixstringtest(string str) {
 }
 int main(void) {
   Server svr;
+ userDB udb;
+
   int nextUser=0;
   map<string,vector<string>> messageMap;
   vector<string> emailvec;
@@ -145,6 +150,7 @@ int main(void) {
     string username = req.matches[1];
     string email = req.matches[2];
     string Password = req.matches[3];
+	udb.reg(username,email,Password);
     string result;
     bool usernamesuccess = false;//not sure if these will be needed
     bool emailsuccess = false;
