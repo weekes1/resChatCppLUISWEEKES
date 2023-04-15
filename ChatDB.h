@@ -20,7 +20,7 @@
 #ifndef CHATDB_H
 #define CHATDB_H
 
-#define DB_URL "jdbc:mariadb://localhost:3306/User_table"
+#define DB_URL "jdbc:mariadb://localhost:3306/ChatApp"
 #define USER "root"
 #define PASS "newpassword"
 

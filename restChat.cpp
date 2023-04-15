@@ -145,6 +145,7 @@ int main(void) {
     res.set_content(resultJSON, "text/json");
   });
 
+
    svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& res) {
     res.set_header("Access-Control-Allow-Origin","*");
     string username = req.matches[1];

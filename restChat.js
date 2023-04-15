@@ -129,7 +129,7 @@ function completereg(results) {
 		leaveSession();
 		return;
 	}
-	var user = results['user'];
+	var user = results['status'];
 	console.log("Reg:"+user);
 //	startSession(user);
 }
