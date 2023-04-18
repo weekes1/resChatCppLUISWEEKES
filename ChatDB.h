@@ -31,8 +31,9 @@ public:
     userDB();
    /* vector<contactEntry> find(string search);
     vector<contactEntry> findByFirst(string first);
-    vector<contactEntry> findByLast(string last);
-    vector<contactEntry> findByType(string type);*/
+    vector<contactEntry> findByLast(string last);*/
+    bool confirm(string user, string pass);
+
     userEntry fetchEntry(string id);
     void reg(string username,string email,string pass);
    /* void editEntry(string idnum,string first,string last,string phone,string type, string email, string age);

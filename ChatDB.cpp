@@ -124,9 +124,10 @@ vector<contactEntry> contactDB::findByFirst(string first) {
     }
     return list;
 }
+*/
 
-vector<contactEntry> contactDB::findByType(string type) {
-	vector<contactEntry> list;
+bool userDB::confirm(string user, string pass ) {
+	
 	
     // Make sure the connection is still valid
     if (!conn) {
@@ -135,24 +136,20 @@ vector<contactEntry> contactDB::findByType(string type) {
    	}	
     // Create a new Statement
 	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
+    cout<<"bfr qry"<<endl;
     
     // Execute query
-    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM contacts WHERE Type like '%"+type+"%'");
-    
-    // Loop through and print results
-    while (res->next()) {
-    	contactEntry entry(res->getString("First"),res->getString("Last"),
-			res->getString("Phone"),res->getString("Type"),
-			res->getString("email"),res->getString("age"),
-			res->getString("ID"));
-	    	
-	    list.push_back(entry);
+    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM User_table WHERE username = '"+user+"'and pass = '"+pass+"'");
+    cout<<"aft qry"<<endl;
+	
+	if(res->next()){
 
-    }
-    return list;
+	return true;
+}else{
+return false;
+}
 
 }
-*/
 
 void userDB::reg(string username,string email,string pass){
 

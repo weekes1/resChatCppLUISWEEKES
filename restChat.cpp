@@ -103,17 +103,20 @@ int main(void) {
     string result;
     vector<string> empty;
     cout << username << " joins" << endl;
-   if(contains(Usernamevec,username) && contains(Passwordvec,pass)){//new 
+   if(udb.confirm(username,pass) ){//new 
+	cout<<"insideif"<<endl;
+  // if(contains(Usernamevec,username) && contains(Passwordvec,pass)){//new 
     // Check if user with this name exists
    // if (messageMap.count(username)) {
     //	result = "{\"status\":\"exists\"}";
    // } else {
     	// Add user to messages map
     	messageMap[username]=empty;
-    	result = "{\"status\":\"success\",\"user\":\"" + username + "\"}";
+    	result = "{\"status\":\"success\",\"user\":\"" + username +"\"}";
     //}
     res.set_content(result, "text/json");
 	}else{//new
+cout<<"not reg"<<endl;
 	result = "{\"status\":\"not registered\"}";
         res.set_content(result, "text/json");
 

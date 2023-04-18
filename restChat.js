@@ -110,6 +110,7 @@ function completeJoin(results) {
 }
 
 function join() {
+	console.log("joining")
 	myname = document.getElementById('yourname').value;
 	pass = document.getElementById('yourpass').value;
 	fetch(baseUrl+'/chat/join/'+myname+'/'+pass, {
