@@ -21,5 +21,5 @@ private:
 
 };
 
-#endif /* CONTACTENTRY_H */
+#endif /* USERENTRY_H */
 
