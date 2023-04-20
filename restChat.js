@@ -5,6 +5,7 @@
 var baseUrl = 'http://3.87.226.20:5005';
 var state="off";
 var myname="";
+var Token="";
 var inthandle;
 
 
@@ -104,8 +105,9 @@ function completeJoin(results) {
 		leaveSession();
 		return;
 	}
-	var user = results['user'];
-	console.log("Join:"+user);
+	Token = results['token'];
+	console.log("Token:"+Token);
+	user = results['user'];
 	startSession(user);
 }
 
@@ -163,7 +165,7 @@ function completeSend(results) {
 function sendText() {
     var message = document.getElementById('message').value;
     console.log("Send: "+myname+":"+message);
-	fetch(baseUrl+'/chat/send/'+myname+'/'+message, {
+	fetch(baseUrl+'/chat/send/'+Token+'/'+message, {
         method: 'get'
     })
     .then (response => response.json() )
@@ -208,7 +210,7 @@ function completeFetch(result) {
 
 /* Check for new messages */
 function fetchMessage() {
-	fetch(baseUrl+'/chat/fetch/'+myname, {
+	fetch(baseUrl+'/chat/fetch/'+Token, {
         method: 'get'
     })
     .then (response => response.json())

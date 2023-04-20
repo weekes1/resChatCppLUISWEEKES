@@ -18,7 +18,7 @@ ChatDB.o: ChatDB.cpp ChatDB.h
 
 
 restChat.o: restChat.cpp httplib.h
-	$(CC) -c $(CFLAGS) restChat.cpp
+	$(CC) -c $(CFLAGS) restChat.cpp 
 
 restChat: restChat.o ChatDB.o ChatEntry.o 
 	$(CC) restChat.o ChatDB.o ChatEntry.o -o restChat -L/usr/local/lib -lmariadbcpp

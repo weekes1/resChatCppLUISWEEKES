@@ -1,5 +1,4 @@
-//
-//  namesAPI.cc - a microservice demo program
+////  namesAPI.cc - a microservice demo program
 //
 // James Skon
 // Kenyon College, 2022
@@ -13,12 +12,28 @@
 #include "httplib.h"
 #include "ChatDB.h"
 #include "ChatEntry.h"
-#include "TokenGenerator.h"
+//#include "TokenGenerator.h"
 
 using namespace httplib;
 using namespace std;
 
 const int port = 5005;
+
+
+
+std::string generateToken()
+{
+    std::string token;
+    const std::string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, chars.size() - 1);
+    for (int i = 0; i < 16; ++i) {
+        token += chars[dis(gen)];
+    }
+    return token;
+}
+
 
 void addMessage(string username, string message, map<string,vector<string>> &messageMap) {
 	/* iterate through users adding message to each */
@@ -86,6 +101,7 @@ int main(void) {
 
   int nextUser=0;
   map<string,vector<string>> messageMap;
+  map<string,string> TokenMap;
   vector<string> emailvec;
   vector<string> Passwordvec;
   vector<string> Usernamevec;//new vectors???????????????????Pls Check
@@ -105,8 +121,11 @@ int main(void) {
     vector<string> empty;
     cout << username << " joins" << endl;
    if(udb.confirm(username,pass) ){//new
-	TokenGenerator Tok(8);
 	
+	string Token = generateToken();
+//	cout << "heelo" << Token;
+//	cout << "Test please work" << endl;
+	TokenMap[Token]=username;
 //gnerate token:
  
 //	cout<<"insideif"<<endl;
@@ -117,7 +136,7 @@ int main(void) {
    // } else {
     	// Add user to messages map
     	messageMap[username]=empty;
-    	result = "{\"status\":\"success\",\"user\":\"" + username +"\"}";
+    	result = "{\"status\":\"success\",\"token\":\"" + Token +"\",\"user\":\""+username+"\"}";
     //}
     res.set_content(result, "text/json");
 	}else{//new
@@ -131,25 +150,42 @@ cout<<"not reg"<<endl;
 
    svr.Get(R"(/chat/send/(.*)/(.*))", [&](const Request& req, Response& res) {
     res.set_header("Access-Control-Allow-Origin","*");
-	string username = req.matches[1];
+	string token = req.matches[1];
 	string message = req.matches[2];
-	string result; 
-	
+	string result;
+	cout<<token<<endl;
+	cout<<TokenMap.count(token)<<endl;
+	cout<<TokenMap.at(token)<<endl; 
+	if(TokenMap.count(token)){
+
+string username = TokenMap.at(token);
     if (!messageMap.count(username)) {
     	result = "{\"status\":\"baduser\"}";
 	} else {
 		addMessage(username,message,messageMap);
 		result = "{\"status\":\"success\"}";
 	}
+}else{
+	result = "{\"status\":\"invalid token\"}";
+}
     res.set_content(result, "text/json");
+
   });
   
    svr.Get(R"(/chat/fetch/(.*))", [&](const Request& req, Response& res) {
-    string username = req.matches[1];
+    string Token = req.matches[1];
     res.set_header("Access-Control-Allow-Origin","*");
+	string resultJSON= "";
+	if(TokenMap.count(Token)){
+	string username = TokenMap.at(Token);
+	
     string result1 = getMessagesJSON(username,messageMap);
     string result2 = getusersJSON(username,messageMap);
-    string resultJSON = result1+result2;
+    resultJSON = result1+result2;
+}else{
+    resultJSON = "{\"status\":\"invalid token\"}";
+}
+
     res.set_content(resultJSON, "text/json");
   });
 
