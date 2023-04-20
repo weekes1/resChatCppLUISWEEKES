@@ -13,6 +13,7 @@
 #include "httplib.h"
 #include "ChatDB.h"
 #include "ChatEntry.h"
+#include "TokenGenerator.h"
 
 using namespace httplib;
 using namespace std;
@@ -103,8 +104,12 @@ int main(void) {
     string result;
     vector<string> empty;
     cout << username << " joins" << endl;
-   if(udb.confirm(username,pass) ){//new 
-	cout<<"insideif"<<endl;
+   if(udb.confirm(username,pass) ){//new
+	TokenGenerator Tok(8);
+	
+//gnerate token:
+ 
+//	cout<<"insideif"<<endl;
   // if(contains(Usernamevec,username) && contains(Passwordvec,pass)){//new 
     // Check if user with this name exists
    // if (messageMap.count(username)) {
