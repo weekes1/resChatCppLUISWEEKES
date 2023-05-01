@@ -2,7 +2,7 @@
 // Jim Skon 2022
 // Kenyon College
 
-var baseUrl = 'http://3.87.226.20:5005';
+var baseUrl = 'http://3.138.190.188:5005';
 var state="off";
 var myname="";
 var Token="";
